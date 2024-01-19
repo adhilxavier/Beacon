@@ -135,8 +135,8 @@ void UartServiceOnBleEvt(ble_evt_t const * p_ble_evt, void * p_context)
     {
         case BLE_GAP_EVT_CONNECTED:
             OnConnect(psUartService, p_ble_evt);
-           // SvcEvt.eEvtType = UART_SVC_EVT_CONNECTED;
-           // psUartService->ServiceEvtHandler(psUartService, &SvcEvt);
+            SvcEvt.eEvtType = UART_SVC_EVT_CONNECTED;
+            psUartService->ServiceEvtHandler(psUartService, &SvcEvt);
             break;
 
         case BLE_GAP_EVT_DISCONNECTED:
@@ -207,24 +207,24 @@ uint32_t UartServiceInit(_sUartService * psUartService, const _sUartServiceInit 
         return err_code;
     }
 
-    //// Add heart rate measurement characteristic
-    //memset(&add_char_params, 0, sizeof(add_char_params));
+    // Add heart rate measurement characteristic
+    memset(&add_char_params, 0, sizeof(add_char_params));
 
-    //add_char_params.uuid              = TX_CHARA_UUID;
-    //add_char_params.uuid_type         = BLE_UUID_TYPE_BLE;
-    //add_char_params.init_len          = sizeof(uint8_t);
-    //add_char_params.max_len           = sizeof(uint8_t);
-    //add_char_params.char_props.read   = 1;
-    //add_char_params.char_props.notify = 1;
+    add_char_params.uuid              = TX_CHARA_UUID;
+    add_char_params.uuid_type         = BLE_UUID_TYPE_BLE;
+    add_char_params.init_len          = sizeof(uint8_t);
+    add_char_params.max_len           = sizeof(uint8_t);
+    add_char_params.char_props.read   = 1;
+    add_char_params.char_props.notify = 1;
 
-    //add_char_params.read_access       = SEC_OPEN;
-    //add_char_params.cccd_write_access = SEC_OPEN;
+    add_char_params.read_access       = SEC_OPEN;
+    add_char_params.cccd_write_access = SEC_OPEN;
 
-    //err_code = characteristic_add(psUartService->usServiceHdl, &add_char_params, &(psUartService->sTxHandle));
-    //if (err_code != NRF_SUCCESS)
-    //{
-    //    return err_code;
-    //}
+    err_code = characteristic_add(psUartService->usServiceHdl, &add_char_params, &(psUartService->sTxHandle));
+    if (err_code != NRF_SUCCESS)
+    {
+        return err_code;
+    }
 
     return NRF_SUCCESS;
 }

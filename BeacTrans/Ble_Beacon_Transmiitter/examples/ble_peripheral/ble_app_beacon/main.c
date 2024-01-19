@@ -391,7 +391,7 @@ static void ble_stack_init(void)
     APP_ERROR_CHECK(err_code);
 
         // Register a handler for BLE events.
-    NRF_SDH_BLE_OBSERVER(m_ble_observer, 3, UartServiceOnBleEvt, NULL);
+    NRF_SDH_BLE_OBSERVER(m_ble_observer, 3, UartServiceOnBleEvt, &sUartService);
 }
 
 
@@ -502,17 +502,21 @@ static void gatt_init(void)
 */
 void UartServiceHandler(_sUartService *psUartService, _sUartServiceEvtType *pEvtType)
 {
-  switch(pEvtType->eEvtType)
+  if (psUartService && pEvtType)
   {
-    case UART_SVC_EVT_CONNECTED             : 
-                                              break;
-    case UART_SVC_EVT_DISCONNECTED          : advertising_start();
-                                              IsAdvertsisementDone = true;
-                                              break;
-    case UART_SVC_EVT_NOTIFICATION_ENABLED  :
-                                              break;
-    default                                 :
-                                              break;
+    switch(pEvtType->eEvtType)
+    {
+      case UART_SVC_EVT_CONNECTED             : PrintMessage("Connected to central\n\r");
+                                                break;
+      case UART_SVC_EVT_DISCONNECTED          : PrintMessage("Disconnected to central\n\r");
+                                                SetDeviceState(DEV_IDLE);
+                                                IsAdvertsisementDone = true;
+                                                break;
+      case UART_SVC_EVT_NOTIFICATION_ENABLED  :
+                                                break;
+      default                                 :
+                                                break;
+    }
   }
 }
 
@@ -566,6 +570,7 @@ int main(void)
                             BeaconProcess();
                             advertising_init();
                             advertising_start();
+                            IsAdvertsisementDone = true;
                             SetDeviceState(0);
                             break;
           case DEV_CONN   : PrintMessage("In connect mode\n\r");
@@ -586,10 +591,12 @@ static void InitConnectableDevice()
   if (IsAdvertsisementDone)
   {
     advertising_stop();
+    m_adv_handle = BLE_GAP_ADV_SET_HANDLE_NOT_SET;
   }
 
   AdvertisingInitConnectable();
   advertising_start();
+  IsAdvertsisementDone = true;
 }
 
 static void BeaconProcess()
@@ -602,7 +609,6 @@ static void BeaconProcess()
    {
      memset(m_beacon_info, 0, sizeof(m_beacon_info));
      memcpy(m_beacon_info, ucResponseData, sizeof(ucResponseData));
-     IsAdvertsisementDone = true;
      ucResponseFlag = false;
    }
 }
