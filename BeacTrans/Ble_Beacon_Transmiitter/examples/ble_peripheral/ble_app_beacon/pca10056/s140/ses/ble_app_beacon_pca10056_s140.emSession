@@ -1,0 +1,105 @@
+<!DOCTYPE CrossStudio_Session_File>
+<session>
+ <Bookmarks/>
+ <Breakpoints groups="Breakpoints" active_group="Breakpoints">
+  <BreakpointListItem trigger="" line="376" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="2" filename="../../../../../../components/ble/common/ble_conn_params.c" useHWbreakpoint="false"/>
+  <BreakpointListItem trigger="" line="28" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="2" filename="../../../ButtonHandler.c" useHWbreakpoint="false"/>
+  <BreakpointListItem trigger="" line="502" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="2" filename="../../../main.c" useHWbreakpoint="false"/>
+  <BreakpointListItem trigger="" line="549" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="2" filename="../../../main.c" useHWbreakpoint="false"/>
+  <BreakpointListItem trigger="" line="558" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="2" filename="../../../main.c" useHWbreakpoint="false"/>
+  <BreakpointListItem trigger="" line="156" counter="0" hardwareBreakpoint="" isFunctionBreakpoint="false" action="" expression="" group="Breakpoints" type="Breakpoint" state="4" filename="../../../UartService.c" useHWbreakpoint="false"/>
+  <Exceptions set="MemManage;UsageFault_Coprocessor;UsageFault_CheckingError;UsageFault_StateError;BusFault;ExceptionEntryReturnFault;HardFault"/>
+ </Breakpoints>
+ <ExecutionProfileWindow/>
+ <FrameBuffer>
+  <FrameBufferWindow width="1340279359" keepAspectRatio="0" zoomToFitWindow="0" addressSpace="" format="0" height="-1432196667" autoEvaluate="0" scaleFactor="1" refreshPeriod="0" name="ble_app_beacon_pca10056_s140_Debug" addressText="" accessByDisplayWidth="0"/>
+ </FrameBuffer>
+ <Memory1>
+  <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" viewType="4" addressOrder="0" columnsText="" refreshPeriod="0" name="ble_app_beacon_pca10056_s140_Debug" sizeText="" addressText=""/>
+ </Memory1>
+ <Memory2>
+  <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" viewType="4" addressOrder="0" columnsText="" refreshPeriod="0" name="ble_app_beacon_pca10056_s140_Debug" sizeText="" addressText=""/>
+ </Memory2>
+ <Memory3>
+  <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" viewType="4" addressOrder="0" columnsText="" refreshPeriod="0" name="ble_app_beacon_pca10056_s140_Debug" sizeText="" addressText=""/>
+ </Memory3>
+ <Memory4>
+  <MemoryWindow addressSpace="" dataSize="1" autoEvaluate="0" viewMode="0" viewType="4" addressOrder="0" columnsText="" refreshPeriod="0" name="ble_app_beacon_pca10056_s140_Debug" sizeText="" addressText=""/>
+ </Memory4>
+ <Project>
+  <ProjectSessionItem path="ble_app_beacon_pca10056_s140"/>
+  <ProjectSessionItem path="ble_app_beacon_pca10056_s140;ble_app_beacon_pca10056_s140"/>
+  <ProjectSessionItem path="ble_app_beacon_pca10056_s140;ble_app_beacon_pca10056_s140;Application"/>
+  <ProjectSessionItem path="ble_app_beacon_pca10056_s140;ble_app_beacon_pca10056_s140;Board Definition"/>
+  <ProjectSessionItem path="ble_app_beacon_pca10056_s140;ble_app_beacon_pca10056_s140;nRF_BLE"/>
+  <ProjectSessionItem path="ble_app_beacon_pca10056_s140;ble_app_beacon_pca10056_s140;nRF_Drivers"/>
+  <ProjectSessionItem path="ble_app_beacon_pca10056_s140;ble_app_beacon_pca10056_s140;nRF_Libraries"/>
+  <ProjectSessionItem path="ble_app_beacon_pca10056_s140;ble_app_beacon_pca10056_s140;nRF_SoftDevice"/>
+ </Project>
+ <Register1>
+  <RegisterWindow visibleNodes="CPU - Current Context/r0;CPU - Current Context/r1;CPU - Current Context/r2;CPU - Current Context/r3;CPU - Current Context/r4;CPU - Current Context/r5;CPU - Current Context/r6;CPU - Current Context/r7;CPU - Current Context/r8;CPU - Current Context/r9;CPU - Current Context/r10;CPU - Current Context/r11;CPU - Current Context/r12;CPU - Current Context/sp(r13);CPU - Current Context/lr(r14);CPU - Current Context/pc(r15);CPU - Current Context/apsr;CPU/r0;CPU/r1;CPU/r2;CPU/r3;CPU/r4;CPU/r5;CPU/r6;CPU/r7;CPU/r8;CPU/r9;CPU/r10;CPU/r11;CPU/r12;CPU/sp(r13);CPU/lr(r14);CPU/pc(r15);CPU/xpsr;CPU/MSP;CPU/PSP;CPU/PRIMASK;CPU/BASEPRI;CPU/FAULTMASK;CPU/CONTROL;CPU/internal" binaryNodes="" asciiNodes="" openNodes="CPU - Current Context" name="ble_app_beacon_pca10056_s140_Debug" decimalNodes="" octalNodes="" unsignedNodes=""/>
+ </Register1>
+ <Register2>
+  <RegisterWindow visibleNodes="CPU - Current Context/r0;CPU - Current Context/r1;CPU - Current Context/r2;CPU - Current Context/r3;CPU - Current Context/r4;CPU - Current Context/r5;CPU - Current Context/r6;CPU - Current Context/r7;CPU - Current Context/r8;CPU - Current Context/r9;CPU - Current Context/r10;CPU - Current Context/r11;CPU - Current Context/r12;CPU - Current Context/sp(r13);CPU - Current Context/lr(r14);CPU - Current Context/pc(r15);CPU - Current Context/apsr;CPU/r0;CPU/r1;CPU/r2;CPU/r3;CPU/r4;CPU/r5;CPU/r6;CPU/r7;CPU/r8;CPU/r9;CPU/r10;CPU/r11;CPU/r12;CPU/sp(r13);CPU/lr(r14);CPU/pc(r15);CPU/xpsr;CPU/MSP;CPU/PSP;CPU/PRIMASK;CPU/BASEPRI;CPU/FAULTMASK;CPU/CONTROL;CPU/internal" binaryNodes="" asciiNodes="" openNodes="CPU - Current Context" name="ble_app_beacon_pca10056_s140_Debug" decimalNodes="" octalNodes="" unsignedNodes=""/>
+ </Register2>
+ <Register3>
+  <RegisterWindow visibleNodes="CPU - Current Context/r0;CPU - Current Context/r1;CPU - Current Context/r2;CPU - Current Context/r3;CPU - Current Context/r4;CPU - Current Context/r5;CPU - Current Context/r6;CPU - Current Context/r7;CPU - Current Context/r8;CPU - Current Context/r9;CPU - Current Context/r10;CPU - Current Context/r11;CPU - Current Context/r12;CPU - Current Context/sp(r13);CPU - Current Context/lr(r14);CPU - Current Context/pc(r15);CPU - Current Context/apsr;CPU/r0;CPU/r1;CPU/r2;CPU/r3;CPU/r4;CPU/r5;CPU/r6;CPU/r7;CPU/r8;CPU/r9;CPU/r10;CPU/r11;CPU/r12;CPU/sp(r13);CPU/lr(r14);CPU/pc(r15);CPU/xpsr;CPU/MSP;CPU/PSP;CPU/PRIMASK;CPU/BASEPRI;CPU/FAULTMASK;CPU/CONTROL;CPU/internal" binaryNodes="" asciiNodes="" openNodes="CPU - Current Context" name="ble_app_beacon_pca10056_s140_Debug" decimalNodes="" octalNodes="" unsignedNodes=""/>
+ </Register3>
+ <Register4>
+  <RegisterWindow visibleNodes="CPU - Current Context/r0;CPU - Current Context/r1;CPU - Current Context/r2;CPU - Current Context/r3;CPU - Current Context/r4;CPU - Current Context/r5;CPU - Current Context/r6;CPU - Current Context/r7;CPU - Current Context/r8;CPU - Current Context/r9;CPU - Current Context/r10;CPU - Current Context/r11;CPU - Current Context/r12;CPU - Current Context/sp(r13);CPU - Current Context/lr(r14);CPU - Current Context/pc(r15);CPU - Current Context/apsr;CPU/r0;CPU/r1;CPU/r2;CPU/r3;CPU/r4;CPU/r5;CPU/r6;CPU/r7;CPU/r8;CPU/r9;CPU/r10;CPU/r11;CPU/r12;CPU/sp(r13);CPU/lr(r14);CPU/pc(r15);CPU/xpsr;CPU/MSP;CPU/PSP;CPU/PRIMASK;CPU/BASEPRI;CPU/FAULTMASK;CPU/CONTROL;CPU/internal" binaryNodes="" asciiNodes="" openNodes="CPU - Current Context" name="ble_app_beacon_pca10056_s140_Debug" decimalNodes="" octalNodes="" unsignedNodes=""/>
+ </Register4>
+ <Threads>
+  <ThreadsWindow showLists=""/>
+ </Threads>
+ <TraceWindow>
+  <Trace enabled="Yes"/>
+ </TraceWindow>
+ <Watch1>
+  <Watches active="1" update="Each Second">
+   <Watchpoint expression="DeviceState" name="DeviceState" radix="-1" linenumber="0" filename=""/>
+   <Watchpoint expression="peDevState" name="peDevState" radix="16" linenumber="0" filename=""/>
+  </Watches>
+ </Watch1>
+ <Watch2>
+  <Watches active="0" update="Never"/>
+ </Watch2>
+ <Watch3>
+  <Watches active="0" update="Never"/>
+ </Watch3>
+ <Watch4>
+  <Watches active="0" update="Never"/>
+ </Watch4>
+ <Files>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="382" useTextEdit="1" path="../../../main.c" left="0" selected="1" top="379" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="69" y="391" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/main.c" path="../../../../../../components/softdevice/s140/headers/ble_gap.h" left="0" top="373" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="4" y="112" useTextEdit="1" openedFrom="C:/Users/jesli/Documents/ble/nRF5_SDK_17.1.0_ddde56/examples/ble_peripheral/ble_app_beacon/main.c" path="../../../../../../components/ble/common/ble_advdata.h" left="0" top="98" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="99" useTextEdit="1" path="../../../../../../components/libraries/util/app_error_weak.c" left="0" top="67" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="8" y="167" useTextEdit="1" openedFrom="C:/Users/jesli/Documents/ble/nRF5_SDK_17.1.0_ddde56/components/libraries/uart/app_uart_fifo.c" path="../../../../../../integration/nrfx/legacy/nrf_drv_uart.h" left="0" top="152" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="5" y="221" useTextEdit="1" openedFrom="C:/Users/jesli/Documents/ble/nRF5_SDK_17.1.0_ddde56/integration/nrfx/legacy/nrf_drv_uart.h" path="../../../../../../modules/nrfx/drivers/src/nrfx_uart.c" left="0" top="206" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="35" y="186" useTextEdit="1" path="../config/sdk_config.h" left="0" top="163" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="33" y="204" useTextEdit="1" path="../../../../../../components/libraries/uart/app_uart_fifo.c" left="0" top="174" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="../../../../../../integration/nrfx/legacy/nrf_drv_uart.c" left="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="8" y="73" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/pca10056/s140/ses/UartService.c" path="../../../../../../components/ble/common/ble_srv_common.h" left="0" top="57" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="8" y="98" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/UartService.c" path="../../../../../../components/softdevice/s140/headers/ble_types.h" left="0" top="83" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="../../../../../../components/ble/common/ble_srv_common.c" left="0" top="34" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="15" y="40" useTextEdit="1" path="../../../../../../components/ble/nrf_ble_gatt/nrf_ble_gatt.c" left="0" top="36" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="69" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/ButtonHandler.c" path="../../../../../../integration/nrfx/legacy/nrf_drv_gpiote.h" left="0" top="55" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="24" y="17" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/main.c" path="../../../ButtonHandler.c" left="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="15" y="12" useTextEdit="1" path="../../../ButtonHandler.h" left="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="8" y="98" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/integration/nrfx/legacy/nrf_drv_gpiote.h" path="../../../../../../modules/nrfx/drivers/include/nrfx_gpiote.h" left="0" top="84" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="23" y="103" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/ButtonHandler.c" path="../../../../../../modules/nrfx/hal/nrf_gpio.h" left="0" top="90" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="909" useTextEdit="1" path="../../../../../../modules/nrfx/drivers/src/nrfx_gpiote.c" left="0" top="908" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="28" y="176" useTextEdit="1" path="../../../../../../components/ble/common/ble_conn_params.c" left="0" top="180" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="89" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/main.c" path="../../../../../../components/softdevice/common/nrf_sdh_ble.c" left="0" top="64" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="17" y="158" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/components/softdevice/common/nrf_sdh_ble.c" path="../../../../../../components/libraries/util/sdk_errors.h" left="0" top="143" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="108" y="536" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/UartService.c" path="../../../../../../components/softdevice/s140/headers/ble.h" left="0" top="521" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="8" y="160" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/main.c" path="../../../../../../components/libraries/util/app_error.h" left="0" top="35" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/main.c" path="../../../../../../components/libraries/util/nordic_common.h" left="0" top="189" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="48" y="108" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/main.c" path="../../../UartService.c" left="0" top="92" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="33" y="55" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/UartService.c" path="../../../UartService.h" left="0" top="40" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="8" y="155" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/UartService.c" path="../../../../../../components/libraries/util/sdk_macros.h" left="0" top="140" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="2" y="96" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/UartService.c" path="../../../../../../components/softdevice/s140/headers/ble_gatts.h" left="0" top="84" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="234" useTextEdit="1" path="../../../../../../components/libraries/log/nrf_log_backend_interface.h" left="0" top="219" codecName="Default"/>
+ </Files>
+ <EMStudioWindow activeProject="ble_app_beacon_pca10056_s140" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/components/ble/nrf_ble_qwr" debugSearchPath="" autoConnectCapabilities="3711"/>
+</session>
