@@ -1,6 +1,6 @@
 #include "ButtonHandler.h"
 
-_eDeviceState DeviceState = DEV_IDLE;
+static _eDeviceState DeviceState = DEV_IDLE;
 
 /**
 * Getting device state
@@ -23,16 +23,13 @@ void SetDeviceState(_eDeviceState DevState)
 */
 void ButtonIntHandler(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t action)
 {
-  if (DeviceState == DEV_IDLE)
+  if (pin == BUTTON_1)
   {
-    if (pin == BUTTON_1)
-    {
-      SetDeviceState(DEV_CONN);
-    }
-    else if (pin == BUTTON_2)
-    {
-      SetDeviceState(DEV_BEACON);      
-    }
+    SetDeviceState(DEV_CONN);
+  }
+  else if (pin == BUTTON_2)
+  {
+    SetDeviceState(DEV_BEACON);      
   }
 }
 
@@ -46,7 +43,7 @@ void GPIOInit(void)
     err_code = nrf_drv_gpiote_init();
     APP_ERROR_CHECK(err_code);
 
-    nrf_drv_gpiote_in_config_t in_config = GPIOTE_CONFIG_IN_SENSE_TOGGLE(true);
+    nrf_drv_gpiote_in_config_t in_config = GPIOTE_CONFIG_IN_SENSE_HITOLO(true);
     in_config.pull = NRF_GPIO_PIN_PULLUP;
 
     err_code = nrf_drv_gpiote_in_init(BUTTON_1, &in_config, ButtonIntHandler);
