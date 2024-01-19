@@ -363,6 +363,7 @@ static void advertising_stop(void)
   ret_code_t err_code;
   if (m_adv_handle != BLE_GAP_ADV_SET_HANDLE_NOT_SET)
   {
+
     err_code = sd_ble_gap_adv_stop(m_adv_handle);
     APP_ERROR_CHECK(err_code);
   }
