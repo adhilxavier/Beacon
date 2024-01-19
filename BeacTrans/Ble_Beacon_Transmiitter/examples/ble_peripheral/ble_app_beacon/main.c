@@ -238,14 +238,14 @@ static void AdvertisingInitConnectable(void)
 {
     ret_code_t    err_code;
     ble_advdata_t advdata;
-    ble_gap_conn_sec_mode_t sec_mode;
+    //ble_gap_conn_sec_mode_t sec_mode;
     //ble_advdata_t srdata;
 
    // ble_uuid_t adv_uuids[] = {{, m_lbs.uuid_type}};
-    BLE_GAP_CONN_SEC_MODE_SET_OPEN(&sec_mode);
-    err_code = sd_ble_gap_device_name_set(&sec_mode,
-                                     (const uint8_t *)DEVICE_NAME,
-                                      strlen(DEVICE_NAME));
+    //BLE_GAP_CONN_SEC_MODE_SET_OPEN(&sec_mode);
+    //err_code = sd_ble_gap_device_name_set(&sec_mode,
+    //                                 (const uint8_t *)DEVICE_NAME,
+    //                                  strlen(DEVICE_NAME));
     // Build and set advertising data.
     memset(&advdata, 0, sizeof(advdata));
 
@@ -564,14 +564,13 @@ int main(void)
         {
           case DEV_BEACON : PrintMessage("In beacon mode\n\r");
                             BeaconProcess();
-                            DevState = DEV_IDLE;
-                            SetDeviceState(DevState);
+                            advertising_init();
+                            advertising_start();
+                            SetDeviceState(0);
                             break;
           case DEV_CONN   : PrintMessage("In connect mode\n\r");
                             InitConnectableDevice();
-
-                            DevState = DEV_IDLE;
-                            SetDeviceState(DevState);
+                            SetDeviceState(0);
                             break;
           case DEV_IDLE   : PrintMessage("In idle mode\n\r");
                             break;
@@ -595,16 +594,14 @@ static void InitConnectableDevice()
 
 static void BeaconProcess()
 {
-   if (ucResponseFlag)
-   {
     if (IsAdvertsisementDone)
     {
       advertising_stop();
     }
+   if (ucResponseFlag)
+   {
      memset(m_beacon_info, 0, sizeof(m_beacon_info));
      memcpy(m_beacon_info, ucResponseData, sizeof(ucResponseData));
-     advertising_init();
-     advertising_start();
      IsAdvertsisementDone = true;
      ucResponseFlag = false;
    }
@@ -650,7 +647,6 @@ bool ReceivePacket()
                     
           }
       }
-
 
     return ucResponseFlag;
 }
