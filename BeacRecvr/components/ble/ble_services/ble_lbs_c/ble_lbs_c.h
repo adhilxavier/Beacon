@@ -99,6 +99,7 @@ NRF_SDH_BLE_OBSERVERS(_name ## _obs,                                            
                               0xDE, 0xEF, 0x12, 0x12, 0x00, 0x00, 0x00, 0x00}
 #define LBS_UUID_SERVICE     0x6695
 #define LBS_UUID_BUTTON_CHAR 0x1408
+#define LBS_UUID_LED_CHAR    0x1123
 
 /**@brief LBS Client event type. */
 typedef enum

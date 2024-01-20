@@ -172,6 +172,20 @@
 #define BLE_RACP_ENABLED 0
 #endif
 
+// </e>
+
+#ifndef  APP_FIFO_ENABLED
+#define  APP_FIFO_ENABLED 1
+#endif
+
+#ifndef  APP_UART_ENABLED
+#define  APP_UART_ENABLED 1
+#endif
+
+#ifndef  APP_UART_DRIVER_INSTANCE
+#define  APP_UART_DRIVER_INSTANCE 0
+#endif
+
 // <e> NRF_BLE_GATT_ENABLED - nrf_ble_gatt - GATT module
 //==========================================================
 #ifndef NRF_BLE_GATT_ENABLED

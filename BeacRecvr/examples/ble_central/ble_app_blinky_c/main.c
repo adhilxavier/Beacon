@@ -60,6 +60,10 @@
 #include "ble_conn_params.h"
 #include "ble_db_discovery.h"
 #include "ble_lbs_c.h"
+#include "UartSvcClient.h"
+#include "app_uart.h"
+#include "nrf_uart.h"
+
 #include "nrf_ble_gatt.h"
 #include "nrf_ble_scan.h"
 
@@ -67,7 +71,7 @@
 #include "nrf_log_ctrl.h"
 #include "nrf_log_default_backends.h"
 
-
+#define UART_SVC                        //Comment here for normal operation
 #define CENTRAL_SCANNING_LED            BSP_BOARD_LED_0                     /**< Scanning LED will be on when the device is scanning. */
 #define CENTRAL_CONNECTED_LED           BSP_BOARD_LED_1                     /**< Connected LED will be on when the device is connected. */
 #define LEDBUTTON_LED                   BSP_BOARD_LED_2                     /**< LED to indicate a change of state of the the Button characteristic on the peer. */
@@ -86,9 +90,16 @@
 
 #define APP_BLE_CONN_CFG_TAG            1                                   /**< A tag identifying the SoftDevice BLE configuration. */
 #define APP_BLE_OBSERVER_PRIO           3                                   /**< Application's BLE observer priority. You shouldn't need to modify this value. */
+#define UART_TX_BUF_SIZE 256                         /**< UART TX buffer size. */
 
+#define UART_RX_BUF_SIZE 256                       /**< UART RX buffer size. */
 NRF_BLE_SCAN_DEF(m_scan);                                       /**< Scanning module instance. */
+#ifndef UART_SVC
 BLE_LBS_C_DEF(m_ble_lbs_c);                                     /**< Main structure used by the LBS client module. */
+#else
+UART_SVC_C_DEF(sUartSvcClient);
+#endif
+
 NRF_BLE_GATT_DEF(m_gatt);                                       /**< GATT module instance. */
 BLE_DB_DISCOVERY_DEF(m_db_disc);                                /**< DB discovery module instance. */
 NRF_BLE_GQ_DEF(m_ble_gatt_queue,                                /**< BLE GATT Queue instance. */
@@ -129,6 +140,7 @@ static ble_gap_conn_params_t m_conn_param =
     .slave_latency     = SLAVE_LATENCY,       // Slave latency.
     .conn_sup_timeout  = CONN_SUP_TIMEOUT     // Supervisory timeout.
 };
+
 
 /**@brief Function to handle asserts in the SoftDevice.
  *
@@ -187,6 +199,7 @@ static void scan_start(void)
 
 /**@brief Handles events coming from the LED Button central module.
  */
+ #ifndef UART_SVC
 static void lbs_c_evt_handler(ble_lbs_c_t * p_lbs_c, ble_lbs_c_evt_t * p_lbs_c_evt)
 {
     switch (p_lbs_c_evt->evt_type)
@@ -226,6 +239,47 @@ static void lbs_c_evt_handler(ble_lbs_c_t * p_lbs_c, ble_lbs_c_evt_t * p_lbs_c_e
             break;
     }
 }
+#else
+static void UartSvcEvtHandler(_sUartSvcClient *psUartSvcClient, _sUartSvcClientEvent * psUartSvcClientEvent)
+{
+    switch (psUartSvcClientEvent->EvtType)
+    {
+        case UART_SERVICE_DISCOVERY_EVT_COMPLETE:
+        {
+            ret_code_t err_code;
+
+            err_code = UartSvcClientHandlesAssign(SERVICE_UUID,
+                                                psUartSvcClientEvent->usConnHdl,
+                                                &psUartSvcClientEvent->params.HdlDb);
+            NRF_LOG_INFO("LED Button service discovered on conn_handle 0x%x.", psUartSvcClientEvent->usConnHdl);
+
+            //err_code = app_button_enable();
+            //APP_ERROR_CHECK(err_code);
+
+            // LED Button service discovered. Enable notification of Button.
+            err_code = UartSvcClientTxNotiFicationEnable(psUartSvcClient);
+            APP_ERROR_CHECK(err_code);
+        } break; // BLE_LBS_C_EVT_DISCOVERY_COMPLETE
+
+        case UART_DATA_RCV_NOTIFICATION:
+        {
+            NRF_LOG_INFO("Button state changed on peer to 0x%x.", psUartSvcClientEvent->params.sRcvdData.ucRcvdData[0]);
+            //if (p_lbs_c_evt->params.button.button_state)
+            //{
+            //    bsp_board_led_on(LEDBUTTON_LED);
+            //}
+            //else
+            //{
+            //    bsp_board_led_off(LEDBUTTON_LED);
+            //}
+        } break; // BLE_LBS_C_EVT_BUTTON_NOTIFICATION
+
+        default:
+            // No implementation needed.
+            break;
+    }
+}
+#endif
 
 
 /**@brief Function for handling BLE events.
@@ -246,9 +300,14 @@ static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
         // discovery, update LEDs status and resume scanning if necessary. */
         case BLE_GAP_EVT_CONNECTED:
         {
+            #ifndef UART_SVC
             NRF_LOG_INFO("Connected.");
             err_code = ble_lbs_c_handles_assign(&m_ble_lbs_c, p_gap_evt->conn_handle, NULL);
             APP_ERROR_CHECK(err_code);
+            #else
+            err_code = UartSvcClientHandlesAssign(&sUartSvcClient, p_gap_evt->conn_handle, NULL);
+            APP_ERROR_CHECK(err_code);
+            #endif
 
             err_code = ble_db_discovery_start(&m_db_disc, p_gap_evt->conn_handle);
             APP_ERROR_CHECK(err_code);
@@ -320,7 +379,7 @@ static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
     }
 }
 
-
+#ifndef UART_SVC
 /**@brief LED Button client initialization.
  */
 static void lbs_c_init(void)
@@ -335,6 +394,21 @@ static void lbs_c_init(void)
     err_code = ble_lbs_c_init(&m_ble_lbs_c, &lbs_c_init_obj);
     APP_ERROR_CHECK(err_code);
 }
+#else
+static void InitUartSvcClient(void)
+{
+    ret_code_t       err_code;
+    _sUartSvcClientInit sUartSvcClientInitObj;
+
+    sUartSvcClientInitObj.EvtHdlr       = UartSvcEvtHandler;
+    sUartSvcClientInitObj.p_gatt_queue  = &m_ble_gatt_queue;
+    sUartSvcClientInitObj.ErrorHdlr = lbs_error_handler;
+
+    err_code = UartSvcClientInit(&sUartSvcClient, &sUartSvcClientInitObj);
+    APP_ERROR_CHECK(err_code);
+}
+#endif
+
 
 
 /**@brief Function for initializing the BLE stack.
@@ -358,8 +432,12 @@ static void ble_stack_init(void)
     err_code = nrf_sdh_ble_enable(&ram_start);
     APP_ERROR_CHECK(err_code);
 
+    #ifndef UART_SVC
     // Register a handler for BLE events.
     NRF_SDH_BLE_OBSERVER(m_ble_observer, APP_BLE_OBSERVER_PRIO, ble_evt_handler, NULL);
+    #else
+    NRF_SDH_BLE_OBSERVER(m_ble_observer, APP_BLE_OBSERVER_PRIO, UartSvcClientOnbleEvt, &sUartSvcClient);
+    #endif
 }
 
 
@@ -375,7 +453,7 @@ static void button_event_handler(uint8_t pin_no, uint8_t button_action)
     switch (pin_no)
     {
         case LEDBUTTON_BUTTON_PIN:
-            err_code = ble_lbs_led_status_send(&m_ble_lbs_c, button_action);
+            //err_code = ble_lbs_led_status_send(&m_ble_lbs_c, button_action);
             if (err_code != NRF_SUCCESS &&
                 err_code != BLE_ERROR_INVALID_CONN_HANDLE &&
                 err_code != NRF_ERROR_INVALID_STATE)
@@ -477,7 +555,11 @@ static void buttons_init(void)
  */
 static void db_disc_handler(ble_db_discovery_evt_t * p_evt)
 {
+#ifndef UART_SVC
     ble_lbs_on_db_disc_evt(&m_ble_lbs_c, p_evt);
+#else
+    UartSvcClientOnDbDiscEvent(&sUartSvcClient, p_evt);
+#endif
 }
 
 
@@ -557,6 +639,30 @@ static void gatt_init(void)
     APP_ERROR_CHECK(err_code);
 }
 
+/*Error Handler*/
+
+void uart_error_handle(app_uart_evt_t * p_event)
+
+{
+
+    if (p_event->evt_type == APP_UART_COMMUNICATION_ERROR)
+
+    {
+
+        APP_ERROR_HANDLER(p_event->data.error_communication);
+
+    }
+
+    else if (p_event->evt_type == APP_UART_FIFO_ERROR)
+
+    {
+
+       APP_ERROR_HANDLER(p_event->data.error_code);
+
+    }
+
+}
+
 
 /**@brief Function for handling the idle state (main loop).
  *
@@ -571,9 +677,30 @@ static void idle_state_handle(void)
 
 int main(void)
 {
+    uint32_t err_code;
     // Initialize
    // APP_ERROR_CHECK(err_code);    // Start execution.
-    log_init();
+         const app_uart_comm_params_t comm_params =
+     {
+            RX_PIN_NUMBER,
+            TX_PIN_NUMBER,
+            UART_PIN_DISCONNECTED,
+            UART_PIN_DISCONNECTED,
+            HWFC,
+            false,
+          NRF_UART_BAUDRATE_115200
+
+      };
+ 
+    APP_UART_FIFO_INIT(&comm_params,
+                       UART_RX_BUF_SIZE,
+                       UART_TX_BUF_SIZE,
+                       uart_error_handle,
+                       APP_IRQ_PRIORITY_HIGHEST,
+                       err_code);
+
+    APP_ERROR_CHECK(err_code);
+   // log_init();
     timer_init();
     leds_init();
     buttons_init();
@@ -582,10 +709,13 @@ int main(void)
     scan_init();
     gatt_init();
     db_discovery_init();
+#ifndef UART_SVC    
     lbs_c_init();
-
+#else
+    InitUartSvcClient();
+#endif
     // Start execution.
-    NRF_LOG_INFO("Blinky CENTRAL example started.");
+    //NRF_LOG_INFO("Blinky CENTRAL example started.");
     scan_start();
 
     // Turn on the LED to signal scanning.
