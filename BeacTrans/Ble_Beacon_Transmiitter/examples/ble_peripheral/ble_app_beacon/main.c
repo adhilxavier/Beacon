@@ -137,13 +137,9 @@
 typedef enum __eRxState
 
 {
-
     START,
-
     RCV,
-
     END
-
 }_eRxState;
  
 static _eRxState RxState = START;
@@ -160,7 +156,7 @@ static uint8_t ucResponseData[110] = {0};
 
 #define NON_CONNECTABLE_ADV_INTERVAL    MSEC_TO_UNITS(100, UNIT_0_625_MS)  /**< The advertising interval for non-connectable advertisement (100 ms). This value can vary between 100ms to 10.24s). */
  
-#define APP_BEACON_INFO_LENGTH          110                               /**< Total length of information advertised by the Beacon. */
+#define APP_BEACON_INFO_LENGTH          150                               /**< Total length of information advertised by the Beacon. */
 
 #define APP_ADV_DATA_LENGTH             25                               /**< Length of manufacturer specific data in the advertisement. */
 
@@ -434,6 +430,11 @@ static void AdvertisingInitConnectable(void)
 
     ble_advdata_t advdata;
 
+    ble_advdata_manuf_data_t manuf_specific_data;
+
+    manuf_specific_data.company_identifier = APP_COMPANY_IDENTIFIER;
+    manuf_specific_data.data.p_data = (uint8_t *) m_beacon_info;
+    manuf_specific_data.data.size   = APP_BEACON_INFO_LENGTH;
     //ble_gap_conn_sec_mode_t sec_mode;
 
     //ble_advdata_t srdata;
@@ -457,10 +458,10 @@ static void AdvertisingInitConnectable(void)
     advdata.include_appearance = true;
 
     advdata.flags              = BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE;
- 
-    err_code = ble_advdata_encode(&advdata, m_adv_data.adv_data.p_data, &m_adv_data.adv_data.len);
+    advdata.p_manuf_specific_data = &manuf_specific_data;
+    //err_code = ble_advdata_encode(&advdata, m_adv_data.adv_data.p_data, &m_adv_data.adv_data.len);
 
-    APP_ERROR_CHECK(err_code);
+    //APP_ERROR_CHECK(err_code);
  
     ble_gap_adv_params_t adv_params;
  
@@ -472,7 +473,7 @@ static void AdvertisingInitConnectable(void)
 
     adv_params.secondary_phy   = BLE_GAP_PHY_CODED;
 
-    adv_params.duration        = APP_ADV_DURATION;
+    adv_params.duration        = BLE_GAP_ADV_TIMEOUT_LIMITED_MAX;
 
     adv_params.properties.type = BLE_GAP_ADV_TYPE_EXTENDED_CONNECTABLE_NONSCANNABLE_UNDIRECTED;
 
@@ -509,15 +510,16 @@ static void advertising_init(void)
 
     uint32_t      err_code;
 
-    ble_advdata_t advdata;
+    ble_advdata_t advdata = {0};
 
     uint8_t       flags = BLE_GAP_ADV_FLAG_BR_EDR_NOT_SUPPORTED;
 
     ble_advdata_manuf_data_t manuf_specific_data;
 
-    ble_gap_conn_sec_mode_t sec_mode;
  
     manuf_specific_data.company_identifier = APP_COMPANY_IDENTIFIER;
+    manuf_specific_data.data.p_data = (uint8_t *) m_beacon_info;
+    manuf_specific_data.data.size   = APP_BEACON_INFO_LENGTH;
  
     //BLE_GAP_CONN_SEC_MODE_SET_OPEN(&sec_mode);
 
@@ -563,45 +565,32 @@ static void advertising_init(void)
     m_beacon_info[index++] = LSB_16(minor_value);
 
 #endif
-
-    manuf_specific_data.data.p_data = (uint8_t *) m_beacon_info;
-
-    manuf_specific_data.data.size   = APP_BEACON_INFO_LENGTH;
  
     // Build and set advertising data.
 
     memset(&advdata, 0, sizeof(advdata));
- 
     advdata.name_type             = BLE_ADVDATA_FULL_NAME;
-
     advdata.flags                 = flags;
-
     advdata.p_manuf_specific_data = &manuf_specific_data;
+
+    //err_code = ble_advdata_encode(&advdata, m_adv_data.adv_data.p_data, &m_adv_data.adv_data.len);
+    //APP_ERROR_CHECK(err_code);
  
     // Initialize advertising parameters (used when starting advertising).
 
     memset(&m_adv_params, 0, sizeof(m_adv_params));
- 
     m_adv_params.properties.type = BLE_GAP_ADV_TYPE_EXTENDED_NONCONNECTABLE_NONSCANNABLE_UNDIRECTED;
-
     m_adv_params.p_peer_addr     = NULL;    // Undirected advertisement.
-
     m_adv_params.filter_policy   = BLE_GAP_ADV_FP_ANY;
-
     m_adv_params.interval        = APP_ADV_INTERVAL;//NON_CONNECTABLE_ADV_INTERVAL;
-
     m_adv_params.duration        = APP_ADV_DURATION;//0;       // Never time out.
-
     m_adv_params.primary_phy     = BLE_GAP_PHY_CODED;
-
     m_adv_params.secondary_phy   = BLE_GAP_PHY_CODED;
  
     err_code = ble_advdata_encode(&advdata, m_adv_data.adv_data.p_data, &m_adv_data.adv_data.len);
-
     APP_ERROR_CHECK(err_code);
  
     err_code = sd_ble_gap_adv_set_configure(&m_adv_handle, &m_adv_data, &m_adv_params);
-
     APP_ERROR_CHECK(err_code);
 
 }
@@ -654,35 +643,24 @@ static void advertising_stop(void)
 */
 
 static void ble_stack_init(void)
-
 {
 
     ret_code_t err_code;
  
     err_code = nrf_sdh_enable_request();
-
     APP_ERROR_CHECK(err_code);
  
     // Configure the BLE stack using the default settings.
-
     // Fetch the start address of the application RAM.
-
     uint32_t ram_start = 0;
 
     err_code = nrf_sdh_ble_default_cfg_set(APP_BLE_CONN_CFG_TAG, &ram_start);
-
     APP_ERROR_CHECK(err_code);
- 
     // Enable BLE stack.
-
     err_code = nrf_sdh_ble_enable(&ram_start);
-
     APP_ERROR_CHECK(err_code);
- 
         // Register a handler for BLE events.
-
     NRF_SDH_BLE_OBSERVER(m_ble_observer, 3, UartServiceOnBleEvt, &sUartService);
-
 }
  
  
@@ -703,11 +681,9 @@ static void log_init(void)
 /**@brief Function for initializing LEDs. */
 
 static void leds_init(void)
-
 {
 
     ret_code_t err_code = bsp_init(BSP_INIT_LEDS, NULL);
-
     APP_ERROR_CHECK(err_code);
 
 }
@@ -716,11 +692,9 @@ static void leds_init(void)
 /**@brief Function for initializing timers. */
 
 static void timers_init(void)
-
 {
 
     ret_code_t err_code = app_timer_init();
-
     APP_ERROR_CHECK(err_code);
 
 }
@@ -731,13 +705,11 @@ static void timers_init(void)
 */
 
 static void power_management_init(void)
-
 {
 
     ret_code_t err_code;
 
     err_code = nrf_pwr_mgmt_init();
-
     APP_ERROR_CHECK(err_code);
 
 }
@@ -756,35 +728,22 @@ static void power_management_init(void)
 static void gap_params_init(void)
  
 {
-
     ret_code_t              err_code;
-
     ble_gap_conn_params_t   gap_conn_params;
-
     ble_gap_conn_sec_mode_t sec_mode;
 
     BLE_GAP_CONN_SEC_MODE_SET_OPEN(&sec_mode);
-
     err_code = sd_ble_gap_device_name_set(&sec_mode,
-
                                           (const uint8_t *)DEVICE_NAME,
-
                                           strlen(DEVICE_NAME));
-
     APP_ERROR_CHECK(err_code);
 
     memset(&gap_conn_params, 0, sizeof(gap_conn_params));
-
     gap_conn_params.min_conn_interval = MIN_CONN_INTERVAL;
-
     gap_conn_params.max_conn_interval = MAX_CONN_INTERVAL;
-
     gap_conn_params.slave_latency     = SLAVE_LATENCY;
-
     gap_conn_params.conn_sup_timeout  = CONN_SUP_TIMEOUT;
-
     err_code = sd_ble_gap_ppcp_set(&gap_conn_params);
-
     APP_ERROR_CHECK(err_code);
  
 }
@@ -799,96 +758,58 @@ static void gap_params_init(void)
 */
 
 static void idle_state_handle(void)
-
 {
-
     if (NRF_LOG_PROCESS() == false)
-
     {
-
         nrf_pwr_mgmt_run();
-
     }
-
 }
  
 ///**@brief GATT module event handler.
-
 // */
-
 //static void gatt_evt_handler(nrf_ble_gatt_t * p_gatt, nrf_ble_gatt_evt_t const * p_evt)
-
 //{
-
 //    if (p_evt->evt_id == NRF_BLE_GATT_EVT_ATT_MTU_UPDATED)
-
 //    {
-
 //        NRF_LOG_INFO("GATT ATT MTU on connection 0x%x changed to %d.",
-
 //                     p_evt->conn_handle,
-
 //                     p_evt->params.att_mtu_effective);
-
 //    }
- 
 //    UartServiceOnBleEvt(&sUartService, p_evt);
-
 //}
  
  
 /**@brief Function for initializing the GATT module.
 
 */
-
 static void gatt_init(void)
-
 {
-
     ret_code_t err_code = nrf_ble_gatt_init(&m_gatt, NULL);
-
     APP_ERROR_CHECK(err_code);
-
 }
  
 /**
-
 *
-
 */
-
 void UartServiceHandler(_sUartService *psUartService, _sUartServiceEvtType *pEvtType)
-
 {
-
   if (psUartService && pEvtType)
-
   {
-
     switch(pEvtType->eEvtType)
-
     {
-
       case UART_SVC_EVT_CONNECTED             : PrintMessage("Connected to central\n\r");
-
                                                 IsConnected = true;
-
                                                 break;
 
       case UART_SVC_EVT_DISCONNECTED          : PrintMessage("Disconnected to central\n\r");
-
                                                 SetDeviceState(DEV_IDLE);
-
-                                                IsAdvertsisementDone = true;
-
+                                                //IsAdvertsisementDone = true;
                                                 break;
 
       case UART_SVC_EVT_NOTIFICATION_ENABLED  : PrintMessage("Notification Enabled\n\r");
-
                                                 break;
 
       default                                 :
-
                                                 break;
 
     }
@@ -908,241 +829,165 @@ int main(void)
 {
  
   // Initialize.
-
       uint32_t err_code = 0x00;
-
       sServiceInit.ServiceEvtHandler = UartServiceHandler;
-
       _eDeviceState DevState;
 
   // Initialize.
 
       const app_uart_comm_params_t comm_params =
-
      {
-
             RX_PIN_NUMBER,
-
             TX_PIN_NUMBER,
-
             UART_PIN_DISCONNECTED,
-
             UART_PIN_DISCONNECTED,
-
             HWFC,
-
             false,
-
           NRF_UART_BAUDRATE_115200
 
       };
  
     APP_UART_FIFO_INIT(&comm_params,
-
                        UART_RX_BUF_SIZE,
-
                        UART_TX_BUF_SIZE,
-
                        uart_error_handle,
-
                        APP_IRQ_PRIORITY_HIGHEST,
-
                        err_code);
 
     APP_ERROR_CHECK(err_code);
 
     timers_init();
-
     leds_init();
-
     GPIOInit();
-
     power_management_init();
-
     ble_stack_init();
-
     conn_params_init();
-
     gap_params_init();
-
     gatt_init();
-
     UartServiceInit(&sUartService, &sServiceInit);
  
     // Enter main loop.
 
-    for (;; )
-
+    for (;;)
     {
-
         peDevState = GetDeviceState();
  
         switch(*peDevState)
-
         {
 
-          case DEV_BEACON : PrintMessage("In beacon mode\n\r");
-
-                            IsAdvertsisementDone = true;
-
+          case DEV_BEACON : 
                             BeaconProcess();
-
                             advertising_init();
-
                             advertising_start();
-
+                            IsAdvertsisementDone = true;
                             SetDeviceState(0);
+                            PrintMessage("In beacon mode\n\r");
 
                             break;
 
           case DEV_CONN   : PrintMessage("In connect mode\n\r");
-
-                            IsAdvertsisementDone = true;
-
                             InitConnectableDevice();
-
+                            IsAdvertsisementDone = true;
                             SetDeviceState(0);
-
                             break;
 
           case DEV_IDLE   : PrintMessage("In idle mode\n\r");
-
                             break;
 
         }
  
-       nrf_delay_ms(10);
+       nrf_delay_ms(5);
 
     }
 
 }
- 
-static void InitConnectableDevice()
 
+/**
+*/
+static void InitConnectableDevice()
 {
 
   if (IsAdvertsisementDone)
-
   {
-
     advertising_stop();
-
   }
  
   AdvertisingInitConnectable();
-
   advertising_start();
 
 }
- 
+
+/**
+*/
 static void BeaconProcess()
 
 {
-
     uint32_t err_code;
  
     if(IsConnected)
-
     {
-
       err_code = sd_ble_gap_disconnect(sUartService.usConnHdl, BLE_HCI_REMOTE_USER_TERMINATED_CONNECTION);
-
       APP_ERROR_CHECK(err_code);
-
     }
 
     if (IsAdvertsisementDone)
-
     {
-
       advertising_stop();
-
     }
 
    if (ucResponseFlag)
-
    {
-
      memset(m_beacon_info, 0, sizeof(m_beacon_info));
-
-     //memcpy(m_beacon_info, ucResponseData, sizeof(ucResponseData));
-
+     memcpy(m_beacon_info, ucResponseData, sizeof(ucResponseData));
      ucResponseFlag = false;
-
    }
-
 }
- 
+
+/**
+*/
 void PrintMessage(const char *pcMessage)
-
 {
-
   while(*pcMessage != '\0')
-
   {
-
     app_uart_put(*pcMessage);
-
     pcMessage++;
-
   }
-
 }
  
+/**
+*/
 bool ReceivePacket()
-
 {
-
     uint8_t ucByte = 0x00;
-
     static uint8_t ucPos = 0;
  
       if (app_uart_get(&ucByte) == NRF_SUCCESS)
-
       {
-
           switch(RxState)
-
           {
-
             case START :  memset(ucResponseData, 0, sizeof(ucResponseData));
 
                           if (ucByte == '*')
-
                           { 
-
                             RxState = RCV;
-
                           }
-
                           break;
  
             case RCV   : if (ucByte == '#')
-
                          {
-
                             RxState = END;
-
                             break;
-
                          }
 
                          ucResponseData[ucPos++] = ucByte;
-
                          break;
  
             case END   : ucPos = 0;
-
                          ucResponseFlag = true;
-
                          RxState = START;
-
                          break;
-
           }
-
       }
  
     return ucResponseFlag;
-
 }

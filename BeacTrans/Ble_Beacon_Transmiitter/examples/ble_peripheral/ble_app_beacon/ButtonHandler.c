@@ -25,11 +25,13 @@ void ButtonIntHandler(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t action)
 {
   if (pin == BUTTON_1)
   {
-    SetDeviceState(DEV_CONN);
+    //SetDeviceState(DEV_CONN);
+    DeviceState = DEV_CONN;
   }
   else if (pin == BUTTON_2)
   {
-    SetDeviceState(DEV_BEACON);      
+    //SetDeviceState(DEV_BEACON); 
+    DeviceState = DEV_BEACON;     
   }
 }
 
