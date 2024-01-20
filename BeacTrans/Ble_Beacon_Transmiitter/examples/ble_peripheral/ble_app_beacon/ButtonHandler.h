@@ -8,6 +8,8 @@
 typedef  enum __eDeviceState
 {
     DEV_IDLE,
+    DEV_BEACON_ADV,
+    DEV_CONN_ADV,
     DEV_BEACON,
     DEV_CONN
 }_eDeviceState; 

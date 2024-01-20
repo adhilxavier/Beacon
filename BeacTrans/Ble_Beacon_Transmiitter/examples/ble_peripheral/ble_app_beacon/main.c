@@ -470,9 +470,7 @@ static void AdvertisingInitConnectable(void)
     memset(&adv_params, 0, sizeof(adv_params));
  
     adv_params.primary_phy     = BLE_GAP_PHY_CODED;
-
     adv_params.secondary_phy   = BLE_GAP_PHY_CODED;
-
     adv_params.duration        = BLE_GAP_ADV_TIMEOUT_LIMITED_MAX;
 
     adv_params.properties.type = BLE_GAP_ADV_TYPE_EXTENDED_CONNECTABLE_NONSCANNABLE_UNDIRECTED;
@@ -759,7 +757,7 @@ static void gap_params_init(void)
 
 static void idle_state_handle(void)
 {
-    if (NRF_LOG_PROCESS() == false)
+   // if (NRF_LOG_PROCESS() == false)
     {
         nrf_pwr_mgmt_run();
     }
@@ -875,24 +873,33 @@ int main(void)
         switch(*peDevState)
         {
 
-          case DEV_BEACON : 
+          case DEV_BEACON_ADV : 
                             BeaconProcess();
                             advertising_init();
                             advertising_start();
                             IsAdvertsisementDone = true;
-                            SetDeviceState(0);
-                            PrintMessage("In beacon mode\n\r");
+                            SetDeviceState(DEV_BEACON);
+                            PrintMessage("In beacon adv mode\n\r");
 
                             break;
 
-          case DEV_CONN   : PrintMessage("In connect mode\n\r");
-                            InitConnectableDevice();
-                            IsAdvertsisementDone = true;
-                            SetDeviceState(0);
-                            break;
+          case DEV_CONN_ADV : 
+                           PrintMessage("In connect adv mode\n\r");
+                           InitConnectableDevice();
+                           IsAdvertsisementDone = true;
+                           SetDeviceState(DEV_CONN);
+                           break;
 
-          case DEV_IDLE   : PrintMessage("In idle mode\n\r");
-                            break;
+          case DEV_BEACON  :
+                          PrintMessage("In beacon mode\n\r");
+                          break;
+          case DEV_CONN    :
+                          PrintMessage("In conn mode\n\r");
+                          break;
+          case DEV_IDLE    : 
+                          PrintMessage("In idle mode\n\r");
+                          idle_state_handle();
+                          break;
 
         }
  
