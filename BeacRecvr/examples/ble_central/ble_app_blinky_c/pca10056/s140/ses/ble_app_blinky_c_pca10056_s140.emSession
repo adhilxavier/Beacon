@@ -61,7 +61,7 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="18" y="61" useTextEdit="1" path="../../../main.c" left="0" top="80" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="18" y="61" useTextEdit="1" path="../../../main.c" left="0" top="61" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="66" y="27" useTextEdit="1" path="flash_placement.xml" left="0" top="0" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="99" useTextEdit="1" path="../../../../../../components/libraries/util/app_error_weak.c" left="0" top="76" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="666" useTextEdit="1" openedFrom="C:/Users/jesli/Documents/ble/nRF5_SDK_17.1.0_ddde56/examples/ble_central/ble_app_blinky_c/main.c" path="../../../../../../components/ble/nrf_ble_scan/nrf_ble_scan.c" left="0" top="666" codecName="Default"/>
@@ -70,10 +70,10 @@
   <SessionOpenFile windowGroup="DockEditLeft" x="4" y="118" useTextEdit="1" openedFrom="C:/Users/jesli/Documents/ble/nRF5_SDK_17.1.0_ddde56/examples/ble_central/ble_app_blinky_c/main.c" path="../../../../../../components/ble/nrf_ble_scan/nrf_ble_scan.h" left="0" top="103" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="40" y="58" useTextEdit="1" openedFrom="C:/Users/jesli/Documents/ble/nRF5_SDK_17.1.0_ddde56/examples/ble_central/ble_app_blinky_c/main.c" path="../../../../../../components/ble/common/ble_advdata.c" left="0" top="49" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="37" y="7826" useTextEdit="1" path="../config/sdk_config.h" left="0" top="7808" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="51" y="94" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/BeaconTest/Ble_Beacon_Reciever/examples/ble_central/ble_app_blinky_c/main.c" path="../../../../../../components/ble/ble_services/ble_lbs_c/ble_lbs_c.c" left="0" top="36" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="28" y="113" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/BeaconTest/Ble_Beacon_Reciever/examples/ble_central/ble_app_blinky_c/UartSvcClient.c" path="../../../../../../components/ble/ble_services/ble_lbs_c/ble_lbs_c.h" left="0" top="106" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="6" y="207" useTextEdit="1" path="../../../UartSvcClient.h" left="0" top="83" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="35" y="9" useTextEdit="1" path="../../../UartSvcClient.c" left="0" selected="1" top="258" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="51" y="94" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/BeaconTest/Ble_Beacon_Reciever/examples/ble_central/ble_app_blinky_c/main.c" path="../../../../../../components/ble/ble_services/ble_lbs_c/ble_lbs_c.c" left="0" top="62" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="96" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/BeaconTest/Ble_Beacon_Reciever/examples/ble_central/ble_app_blinky_c/UartSvcClient.c" path="../../../../../../components/ble/ble_services/ble_lbs_c/ble_lbs_c.h" left="0" selected="1" top="77" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="6" y="207" useTextEdit="1" path="../../../UartSvcClient.h" left="0" top="175" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="35" y="9" useTextEdit="1" path="../../../UartSvcClient.c" left="0" top="9" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="8" y="205" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/BeaconTest/Ble_Beacon_Reciever/examples/ble_central/ble_app_blinky_c/UartSvcClient.c" path="../../../../../../components/ble/common/ble_srv_common.h" left="0" top="191" codecName="Default"/>
  </Files>
  <EMStudioWindow activeProject="ble_app_blinky_c_pca10056_s140" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="" debugSearchPath="" autoConnectCapabilities="3199"/>
