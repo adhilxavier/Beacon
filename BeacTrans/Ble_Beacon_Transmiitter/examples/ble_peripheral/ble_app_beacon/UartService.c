@@ -292,12 +292,9 @@ void UartServiceOnBleEvt(ble_evt_t const * p_ble_evt, void * p_context)
 }
  
 uint32_t UartServiceInit(_sUartService * psUartService, const _sUartServiceInit *psUartServiceInit)
-
 {
 
     uint32_t              err_code;
-
-    ble_uuid_t            ble_uuid;
 
     ble_uuid_t            ble_uid;
 
@@ -356,7 +353,7 @@ uint32_t UartServiceInit(_sUartService * psUartService, const _sUartServiceInit 
 
     add_char_params.init_len          = sizeof(uint8_t);
 
-    add_char_params.max_len           = sizeof(uint8_t);
+    add_char_params.max_len           = 264;
 
     add_char_params.char_props.read   = 1;
 
@@ -369,11 +366,8 @@ uint32_t UartServiceInit(_sUartService * psUartService, const _sUartServiceInit 
     err_code = characteristic_add(psUartService->usServiceHdl, &add_char_params, &(psUartService->sTxHandle));
 
     if (err_code != NRF_SUCCESS)
-
     {
-
         return err_code;
-
     }
  
     return NRF_SUCCESS;
@@ -381,11 +375,12 @@ uint32_t UartServiceInit(_sUartService * psUartService, const _sUartServiceInit 
 }
  
  
-uint32_t DoNotification(_sUartService * psUartService, uint16_t heart_rate)
+uint32_t DoNotification(_sUartService * psUartService, uint8_t *pucNotifyByf)
 
 {
 
     uint32_t err_code;
+    const uint8_t sampleBuf[2] = {'A','B'};
  
     // Send value if connected and notifying
 
@@ -401,7 +396,8 @@ uint32_t DoNotification(_sUartService * psUartService, uint16_t heart_rate)
  
       //  len     = hrm_encode(p_hrs, heart_rate, encoded_hrm);
 
-        hvx_len = 2;
+        hvx_len = 264;
+        //len = 10;
  
         memset(&hvx_params, 0, sizeof(hvx_params));
  
@@ -413,7 +409,7 @@ uint32_t DoNotification(_sUartService * psUartService, uint16_t heart_rate)
 
         hvx_params.p_len  = &hvx_len;
 
-        hvx_params.p_data = &heart_rate;
+        hvx_params.p_data = pucNotifyByf;
  
         err_code = sd_ble_gatts_hvx(psUartService->usConnHdl, &hvx_params);
 
@@ -437,4 +433,56 @@ uint32_t DoNotification(_sUartService * psUartService, uint16_t heart_rate)
  
     return err_code;
 
+}
+
+/**
+ * @brief Pushes a byte into the circular buffer.
+ * @param[in] c Circular buffer.
+ * @param[in] data Byte to push into the buffer.
+ * @return 0 on success, -1 on failure.
+*/
+int CircularBufPush(_sCircularBuf *c, uint8_t data) 
+{
+    int next;
+    next = c->head + 1;
+
+    if (next >= c->maxlen)
+    {
+        next = 0;
+    }
+    if (next == c->tail)
+    {
+        return -1;
+    }
+
+    c->buffer[c->head] = data;
+    c->head = next;
+
+    return 0;
+
+}
+
+/**
+ * @brief Pops a byte from the circular buffer.
+ * @param[in] c Circular buffer.
+ * @param[in] data Byte to pop from the buffer.
+ * @return 0 on success, -1 on failure.
+*/
+int CircularBufPop(_sCircularBuf *c, uint8_t *data) {
+
+    int next;
+ 
+    if (c->head == c->tail)
+    {
+        return -1;
+    }
+    next = c->tail + 1;
+
+    if (next >= c->maxlen)
+    {
+        next = 0;
+    }
+    *data = c->buffer[c->tail];
+    c->tail = next;
+    return 0;
 }

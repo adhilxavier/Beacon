@@ -15,11 +15,22 @@ extern "C" {
 #endif
 
 
+#define CIRC_BBUF_DEF(x, y)         \
+    uint8_t x##_data_space[y];      \
+    _sCircularBuf x = {               \
+        .buffer = x##_data_space,   \
+        .head = 0,                   \
+        .tail = 0,                   \
+        .maxlen = y                  \
+    }
+    
 #define UART_SERVICE_UUID   {0x23, 0xD1, 0xBC, 0xEA, 0x5F, 0x78, 0x23, 0x15, \
                               0xDE, 0xEF, 0x12, 0x12, 0x00, 0x00, 0x00, 0x00}
 #define SERVICE_UUID        0x6695
 #define TX_CHARA_UUID       0x1408
 #define RX_CHARA_UUID       0x2000
+#define NOTIFY_BUF_LEN      264
+#define SPLIT_COUNT         4
 
 /**@brief Uart Service event type. */
 typedef enum __eUartServiceEvt
@@ -30,6 +41,13 @@ typedef enum __eUartServiceEvt
     UART_SVC_EVT_CONNECTED,
     UART_SVC_EVT_DISCONNECTED
 }_eUartServiceEvt;
+
+typedef struct __sCircularBuf{
+    uint8_t * const buffer;
+    int head;
+    int tail;
+    const int maxlen;
+} _sCircularBuf;
 
 /**@brief Heart Rate Service event. */
 typedef struct __sUartServiceEvtType
@@ -99,8 +117,23 @@ void UartServiceOnBleEvt(ble_evt_t const * p_ble_evt, void * p_context);
 // *
 // * @return      NRF_SUCCESS on success, otherwise an error code.
 // */
-uint32_t DoNotification(_sUartService * psUartService, uint16_t heart_rate);
+uint32_t DoNotification(_sUartService * psUartService, uint8_t *pucNotifyBuf);
 
+/**
+ * @brief Pushes a byte into the circular buffer.
+ * @param[in] c Circular buffer to push into
+ * @param[in] data Byte to push
+ * @return 0 on success, nonzero on failure
+*/
+int CircularBufPush(_sCircularBuf *c, uint8_t data);
+
+/**
+ * @brief Pops bytes from the circular buffer.
+ * @param[in] c Circular buffer to pop from
+ * @param[out] data Byte to pop
+ * @return 0 on success, nonzero on failure
+*/
+int CircularBufPop(_sCircularBuf *c, uint8_t *data); 
 
 
 

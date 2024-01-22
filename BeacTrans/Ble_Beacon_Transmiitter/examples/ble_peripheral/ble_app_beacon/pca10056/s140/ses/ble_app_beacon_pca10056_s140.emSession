@@ -56,8 +56,8 @@
  </TraceWindow>
  <Watch1>
   <Watches active="1" update="Each Second">
-   <Watchpoint expression="DeviceState" name="DeviceState" radix="-1" linenumber="0" filename=""/>
-   <Watchpoint expression="peDevState" name="peDevState" radix="16" linenumber="0" filename=""/>
+   <Watchpoint expression="DeviceState" name="DeviceState" radix="-1" linenumber="0" filename="../ses"/>
+   <Watchpoint expression="peDevState" name="peDevState" radix="16" linenumber="0" filename="../ses"/>
   </Watches>
  </Watch1>
  <Watch2>
@@ -70,7 +70,7 @@
   <Watches active="0" update="Never"/>
  </Watch4>
  <Files>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="382" useTextEdit="1" path="../../../main.c" left="0" selected="1" top="379" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="351" useTextEdit="1" path="../../../main.c" left="0" selected="1" top="691" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="69" y="391" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/main.c" path="../../../../../../components/softdevice/s140/headers/ble_gap.h" left="0" top="373" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="4" y="112" useTextEdit="1" openedFrom="C:/Users/jesli/Documents/ble/nRF5_SDK_17.1.0_ddde56/examples/ble_peripheral/ble_app_beacon/main.c" path="../../../../../../components/ble/common/ble_advdata.h" left="0" top="98" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="99" useTextEdit="1" path="../../../../../../components/libraries/util/app_error_weak.c" left="0" top="67" codecName="Default"/>
@@ -84,22 +84,22 @@
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" path="../../../../../../components/ble/common/ble_srv_common.c" left="0" top="34" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="15" y="40" useTextEdit="1" path="../../../../../../components/ble/nrf_ble_gatt/nrf_ble_gatt.c" left="0" top="36" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="69" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/ButtonHandler.c" path="../../../../../../integration/nrfx/legacy/nrf_drv_gpiote.h" left="0" top="55" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="24" y="17" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/main.c" path="../../../ButtonHandler.c" left="0" top="0" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="24" y="17" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/main.c" path="../../../ButtonHandler.c" left="0" top="11" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="15" y="12" useTextEdit="1" path="../../../ButtonHandler.h" left="0" top="0" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="8" y="98" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/integration/nrfx/legacy/nrf_drv_gpiote.h" path="../../../../../../modules/nrfx/drivers/include/nrfx_gpiote.h" left="0" top="84" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="23" y="103" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/ButtonHandler.c" path="../../../../../../modules/nrfx/hal/nrf_gpio.h" left="0" top="90" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="909" useTextEdit="1" path="../../../../../../modules/nrfx/drivers/src/nrfx_gpiote.c" left="0" top="908" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="28" y="176" useTextEdit="1" path="../../../../../../components/ble/common/ble_conn_params.c" left="0" top="180" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="909" useTextEdit="1" path="../../../../../../modules/nrfx/drivers/src/nrfx_gpiote.c" left="0" top="906" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="28" y="176" useTextEdit="1" path="../../../../../../components/ble/common/ble_conn_params.c" left="0" top="176" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="89" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/main.c" path="../../../../../../components/softdevice/common/nrf_sdh_ble.c" left="0" top="64" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="17" y="158" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/components/softdevice/common/nrf_sdh_ble.c" path="../../../../../../components/libraries/util/sdk_errors.h" left="0" top="143" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="17" y="158" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/components/softdevice/common/nrf_sdh_ble.c" path="../../../../../../components/libraries/util/sdk_errors.h" left="0" top="137" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="108" y="536" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/UartService.c" path="../../../../../../components/softdevice/s140/headers/ble.h" left="0" top="521" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="8" y="160" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/main.c" path="../../../../../../components/libraries/util/app_error.h" left="0" top="35" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/main.c" path="../../../../../../components/libraries/util/nordic_common.h" left="0" top="189" codecName="Default"/>
-  <SessionOpenFile windowGroup="DockEditLeft" x="48" y="108" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/main.c" path="../../../UartService.c" left="0" top="92" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="8" y="160" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/main.c" path="../../../../../../components/libraries/util/app_error.h" left="0" top="129" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="0" y="0" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/main.c" path="../../../../../../components/libraries/util/nordic_common.h" left="0" top="184" codecName="Default"/>
+  <SessionOpenFile windowGroup="DockEditLeft" x="48" y="108" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/main.c" path="../../../UartService.c" left="0" top="274" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="33" y="55" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/UartService.c" path="../../../UartService.h" left="0" top="40" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="8" y="155" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/UartService.c" path="../../../../../../components/libraries/util/sdk_macros.h" left="0" top="140" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="2" y="96" useTextEdit="1" openedFrom="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/examples/ble_peripheral/ble_app_beacon/UartService.c" path="../../../../../../components/softdevice/s140/headers/ble_gatts.h" left="0" top="84" codecName="Default"/>
   <SessionOpenFile windowGroup="DockEditLeft" x="0" y="234" useTextEdit="1" path="../../../../../../components/libraries/log/nrf_log_backend_interface.h" left="0" top="219" codecName="Default"/>
  </Files>
- <EMStudioWindow activeProject="ble_app_beacon_pca10056_s140" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/components/ble/nrf_ble_qwr" debugSearchPath="" autoConnectCapabilities="3711"/>
+ <EMStudioWindow activeProject="ble_app_beacon_pca10056_s140" fileDialogDefaultFilter="*.c" autoConnectTarget="J-Link" buildConfiguration="Debug" sessionSettings="" debugSearchFileMap="" fileDialogInitialDirectory="C:/Users/adhil/OneDrive/Desktop/Train/Ble_Beacon_Transmiitter/Ble_Beacon_Transmiitter/components/ble/nrf_ble_qwr" debugSearchPath="" autoConnectCapabilities="3199"/>
 </session>
