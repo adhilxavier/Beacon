@@ -203,12 +203,12 @@
 
 // <o> NRF_BLE_GQ_GATTC_WRITE_MAX_DATA_LEN - Maximal size of the data inside GATTC write request (in bytes). 
 #ifndef NRF_BLE_GQ_GATTC_WRITE_MAX_DATA_LEN
-#define NRF_BLE_GQ_GATTC_WRITE_MAX_DATA_LEN 16
+#define NRF_BLE_GQ_GATTC_WRITE_MAX_DATA_LEN 264
 #endif
 
 // <o> NRF_BLE_GQ_GATTS_HVX_MAX_DATA_LEN - Maximal size of the data inside GATTC notification or indication request (in bytes). 
 #ifndef NRF_BLE_GQ_GATTS_HVX_MAX_DATA_LEN
-#define NRF_BLE_GQ_GATTS_HVX_MAX_DATA_LEN 16
+#define NRF_BLE_GQ_GATTS_HVX_MAX_DATA_LEN 264
 #endif
 
 // </e>
@@ -1479,6 +1479,21 @@
 #endif
 
 // </e>
+
+// </e>
+
+#ifndef  APP_FIFO_ENABLED
+#define  APP_FIFO_ENABLED 1
+#endif
+
+#ifndef  APP_UART_ENABLED
+#define  APP_UART_ENABLED 1
+#endif
+
+#ifndef  APP_UART_DRIVER_INSTANCE
+#define  APP_UART_DRIVER_INSTANCE 0
+#endif
+
 
 // </h> 
 //==========================================================
@@ -11597,7 +11612,7 @@
 
 // <o> NRF_SDH_BLE_GATT_MAX_MTU_SIZE - Static maximum MTU size. 
 #ifndef NRF_SDH_BLE_GATT_MAX_MTU_SIZE
-#define NRF_SDH_BLE_GATT_MAX_MTU_SIZE 23
+#define NRF_SDH_BLE_GATT_MAX_MTU_SIZE 264
 #endif
 
 // <o> NRF_SDH_BLE_GATTS_ATTR_TAB_SIZE - Attribute Table size in bytes. The size must be a multiple of 4. 

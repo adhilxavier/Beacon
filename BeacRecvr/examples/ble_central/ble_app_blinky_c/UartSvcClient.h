@@ -53,7 +53,8 @@ typedef enum
 /**@brief Structure containing the Button value received from the peer. */
 typedef struct __sRCvdData
 {
-    uint8_t ucRcvdData[247];  /**< Button Value. */
+    uint8_t ucRcvdData[280];  /**< Button Value. */
+    uint16_t usLen;
 } _sRCvdData;
 
 /**@brief Structure containing the handles related to the LED Button Service found on the peer. */

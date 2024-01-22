@@ -549,8 +549,8 @@ enum BLE_GAP_TX_POWER_ROLES
 /**@defgroup BLE_GAP_PHYS GAP PHYs
  * @{ */
 #define BLE_GAP_PHY_AUTO                         0x00    /**< Automatic PHY selection. Refer @ref sd_ble_gap_phy_update for more information.*/
-#define BLE_GAP_PHY_1MBPS                        0x01    /**< 1 Mbps PHY. */
 #define BLE_GAP_PHY_2MBPS                        0x02    /**< 2 Mbps PHY. */
+#define BLE_GAP_PHY_1MBPS                        0x01    /**< 1 Mbps PHY. */
 #define BLE_GAP_PHY_CODED                        0x04    /**< Coded PHY. */
 #define BLE_GAP_PHY_NOT_SET                      0xFF    /**< PHY is not configured. */
 

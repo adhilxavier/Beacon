@@ -8,7 +8,8 @@
 
 
 #define WRITE_MESSAGE_LENGTH   BLE_CCCD_VALUE_LEN    /**< Length of the write message for CCCD. */
-
+//BLE_DB_DISCOVERY_ARRAY_DEF(m_db_discovery, 1);
+BLE_DB_DISCOVERY_DEF(m_db_discovery); 
 
 /**@brief Function for intercepting the errors of GATTC and the BLE GATT Queue.
  *
@@ -54,7 +55,7 @@ static void on_hvx(_sUartSvcClient *psUartSvcClient, ble_evt_t const * p_ble_evt
         if (p_ble_evt->evt.gattc_evt.params.hvx.len)
         {
             _sUartSvcClientEvent sUartSvcClientEvent;
-
+            sUartSvcClientEvent.params.sRcvdData.usLen = p_ble_evt->evt.gattc_evt.params.hvx.len;
             sUartSvcClientEvent.EvtType              = UART_DATA_RCV_NOTIFICATION;
             sUartSvcClientEvent.usConnHdl            = psUartSvcClient->usConnHdl;
             memcpy(sUartSvcClientEvent.params.sRcvdData.ucRcvdData, 
@@ -79,9 +80,14 @@ static void on_disconnected(_sUartSvcClient *psUartSvcClient, ble_evt_t const * 
 {
     if (psUartSvcClient->usConnHdl == p_ble_evt->evt.gap_evt.conn_handle)
     {
+                _sUartSvcClientEvent sUartSvcClientEvent;
+
+            sUartSvcClientEvent.EvtType              = UART_SVC_DISCONNECTED;
         psUartSvcClient->usConnHdl                            = BLE_CONN_HANDLE_INVALID;
         psUartSvcClient->sUartSvcCliHdlDb.usTxCharaCCCDHandle = BLE_GATT_HANDLE_INVALID;
         psUartSvcClient->sUartSvcCliHdlDb.usTxCharaHandle     = BLE_GATT_HANDLE_INVALID;
+        psUartSvcClient->EvtHdlr(psUartSvcClient, &sUartSvcClientEvent);
+
     }
 }
 
@@ -150,7 +156,7 @@ uint32_t UartSvcClientInit(_sUartSvcClient *psUartSvcClient, _sUartSvcClientInit
     psUartSvcClient->EvtHdlr                              = psUartSvcClientInit->EvtHdlr;
     psUartSvcClient->p_gatt_queue                         = psUartSvcClientInit->p_gatt_queue;
     psUartSvcClient->ErrorHdlr                            = psUartSvcClientInit->ErrorHdlr;
-
+    psUartSvcClient->ucUUIDType                           = BLE_UUID_TYPE_BLE;
     err_code = sd_ble_uuid_vs_add(&lbs_base_uuid, &psUartSvcClient->ucUUIDType);
     if (err_code != NRF_SUCCESS)
     {
@@ -166,6 +172,8 @@ uint32_t UartSvcClientInit(_sUartSvcClient *psUartSvcClient, _sUartSvcClientInit
 
 void UartSvcClientOnbleEvt(ble_evt_t const * p_ble_evt, void * p_context)
 {
+    uint32_t err_code;
+    ble_gap_evt_t const *p_gap_evt = &p_ble_evt->evt.gap_evt;
     if ((p_context == NULL) || (p_ble_evt == NULL))
     {
         return;
@@ -175,6 +183,22 @@ void UartSvcClientOnbleEvt(ble_evt_t const * p_ble_evt, void * p_context)
 
     switch (p_ble_evt->header.evt_id)
     {
+        case BLE_GAP_EVT_CONNECTED:
+            err_code = UartSvcClientHandlesAssign(psUartSvcClient, p_gap_evt->conn_handle, NULL);
+            APP_ERROR_CHECK(err_code);
+            
+            err_code = ble_db_discovery_start(&m_db_discovery, p_gap_evt->conn_handle);
+            //while (err_code == NRF_ERROR_BUSY)
+            //{
+            //    err_code = ble_db_discovery_start(&m_db_discovery, p_gap_evt->conn_handle);
+
+            //   // APP_ERROR_CHECK(err_code);
+            //}
+            ////else
+            ////{
+            ////    APP_ERROR_CHECK(err_code);
+            ////}
+            break;
         case BLE_GATTC_EVT_HVX:
             on_hvx(psUartSvcClient, p_ble_evt);
             break;
@@ -217,6 +241,7 @@ static uint32_t cccd_configure(_sUartSvcClient *psUartSvcClient, bool enable)
     cccd_req.params.gattc_write.offset   = 0;
     cccd_req.params.gattc_write.p_value  = cccd;
     cccd_req.params.gattc_write.write_op = BLE_GATT_OP_WRITE_REQ;
+    cccd_req.params.gattc_write.flags = BLE_GATT_EXEC_WRITE_FLAG_PREPARED_WRITE;
 
     return nrf_ble_gq_item_add(psUartSvcClient->p_gatt_queue, &cccd_req, psUartSvcClient->usConnHdl);
 }
@@ -267,6 +292,7 @@ uint32_t UartSvcClientHandlesAssign(_sUartSvcClient *psUartSvcClient,
                                   uint16_t         usConnHdl,
                                   const _sUartSvcCliHdlDb *psUartSvcCliHdlDb)
 {
+    uint32_t err_code;
     VERIFY_PARAM_NOT_NULL(psUartSvcClient);
 
     psUartSvcClient->usConnHdl = usConnHdl;
@@ -274,6 +300,8 @@ uint32_t UartSvcClientHandlesAssign(_sUartSvcClient *psUartSvcClient,
     {
         psUartSvcClient->sUartSvcCliHdlDb = *psUartSvcCliHdlDb;
     }
-    return nrf_ble_gq_conn_handle_register(psUartSvcClient->p_gatt_queue, usConnHdl);
+    err_code = nrf_ble_gq_conn_handle_register(psUartSvcClient->p_gatt_queue, usConnHdl);
+    APP_ERROR_CHECK(err_code);
+    return err_code;
 }
 

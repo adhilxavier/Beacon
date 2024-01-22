@@ -106,6 +106,8 @@ NRF_BLE_GQ_DEF(m_ble_gatt_queue,                                /**< BLE GATT Qu
                NRF_SDH_BLE_CENTRAL_LINK_COUNT,
                NRF_BLE_GQ_QUEUE_SIZE);
 
+void PrintMessage(const char *pcMessage);
+
 static char const m_target_periph_name[] = "Test Beacon";     /**< Name of the device we try to connect to. This name is searched in the scan report data*/
 
 //................................................................................edited........................................
@@ -120,7 +122,7 @@ static ble_gap_scan_params_t const m_scan_param_coded_phy =
     .interval      = SCAN_INTERVAL,
     .window        = SCAN_WINDOW,
     .timeout       = 0x0000, // No timeout.
-    .scan_phys     = BLE_GAP_PHY_CODED, 
+    .scan_phys     = BLE_GAP_PHY_1MBPS, 
     .filter_policy = BLE_GAP_SCAN_FP_ACCEPT_ALL,
 };
 static ble_gap_scan_params_t m_scan_param = /**< Scan parameters requested for scanning and connection. */
@@ -130,7 +132,7 @@ static ble_gap_scan_params_t m_scan_param = /**< Scan parameters requested for s
         .window = NRF_BLE_SCAN_SCAN_WINDOW,
         .filter_policy = BLE_GAP_SCAN_FP_ACCEPT_ALL,
         .timeout = NRF_BLE_SCAN_SCAN_DURATION,
-        .scan_phys = BLE_GAP_PHY_CODED,
+        .scan_phys = BLE_GAP_PHY_1MBPS,
         .extended = true,
 };
 static ble_gap_conn_params_t m_conn_param =
@@ -248,10 +250,10 @@ static void UartSvcEvtHandler(_sUartSvcClient *psUartSvcClient, _sUartSvcClientE
         {
             ret_code_t err_code;
 
-            err_code = UartSvcClientHandlesAssign(SERVICE_UUID,
+            err_code = UartSvcClientHandlesAssign(psUartSvcClient,
                                                 psUartSvcClientEvent->usConnHdl,
                                                 &psUartSvcClientEvent->params.HdlDb);
-            NRF_LOG_INFO("LED Button service discovered on conn_handle 0x%x.", psUartSvcClientEvent->usConnHdl);
+            printf("uart service discovered\n\r");
 
             //err_code = app_button_enable();
             //APP_ERROR_CHECK(err_code);
@@ -259,11 +261,17 @@ static void UartSvcEvtHandler(_sUartSvcClient *psUartSvcClient, _sUartSvcClientE
             // LED Button service discovered. Enable notification of Button.
             err_code = UartSvcClientTxNotiFicationEnable(psUartSvcClient);
             APP_ERROR_CHECK(err_code);
+            printf("Notification enabled\n\r");
+
         } break; // BLE_LBS_C_EVT_DISCOVERY_COMPLETE
 
         case UART_DATA_RCV_NOTIFICATION:
         {
-            NRF_LOG_INFO("Button state changed on peer to 0x%x.", psUartSvcClientEvent->params.sRcvdData.ucRcvdData[0]);
+         // for(int i =0; i < psUartSvcClientEvent->params.sRcvdData.usLen; i++)
+          //{
+                     printf("%02x ", psUartSvcClientEvent->params.sRcvdData.ucRcvdData[1]);
+         // }
+          printf("\n\r");
             //if (p_lbs_c_evt->params.button.button_state)
             //{
             //    bsp_board_led_on(LEDBUTTON_LED);
@@ -273,6 +281,10 @@ static void UartSvcEvtHandler(_sUartSvcClient *psUartSvcClient, _sUartSvcClientE
             //    bsp_board_led_off(LEDBUTTON_LED);
             //}
         } break; // BLE_LBS_C_EVT_BUTTON_NOTIFICATION
+
+        case UART_SVC_DISCONNECTED:
+                scan_start();
+                break;
 
         default:
             // No implementation needed.
@@ -513,9 +525,13 @@ static void scan_evt_handler(scan_evt_t const * p_scan_evt)
          // printf("\n%x \n", p_parsed_data[1]);
           for(int i = 0; i < data_len; i++)
           {
-            printf("%x ", p_parsed_data[i]);
+            printf("%s", (char *)p_parsed_data);
           }
           printf("\n\r");
+
+          err_code = sd_ble_gap_connect(&p_adv->peer_addr,p_scan_param, &m_scan.conn_params,APP_BLE_CONN_CFG_TAG);
+          APP_ERROR_CHECK(err_code);
+          printf("Connection SUCCESS \n\r");
 
           break;
       }
@@ -555,11 +571,21 @@ static void buttons_init(void)
  */
 static void db_disc_handler(ble_db_discovery_evt_t * p_evt)
 {
+  ble_db_discovery_t const *p_db = (ble_db_discovery_t *)p_evt->params.p_db_instance;
 #ifndef UART_SVC
     ble_lbs_on_db_disc_evt(&m_ble_lbs_c, p_evt);
 #else
     UartSvcClientOnDbDiscEvent(&sUartSvcClient, p_evt);
 #endif
+    if (p_evt->evt_type == BLE_DB_DISCOVERY_AVAILABLE)
+    {
+        printf("DB Discovery instance %p available on conn handle: %d\n\r",
+                     p_db,
+                     p_evt->conn_handle);
+        printf("Found %d services on conn_handle: %d\n",
+                     p_db->srv_count,
+                     p_evt->conn_handle);
+    }
 }
 
 
@@ -661,6 +687,16 @@ void uart_error_handle(app_uart_evt_t * p_event)
 
     }
 
+}
+/**
+*/
+void PrintMessage(const char *pcMessage)
+{
+  while(*pcMessage != '\0')
+  {
+    app_uart_put(*pcMessage);
+    pcMessage++;
+  }
 }
 
 
