@@ -102,6 +102,8 @@
 
 NRF_BLE_QWR_DEF(m_qwr);
 
+uint16_t count = 0;
+
 /**@brief Function for handling the Connect event.
 
 *
@@ -271,7 +273,19 @@ void UartServiceOnBleEvt(ble_evt_t const * p_ble_evt, void * p_context)
 
             APP_ERROR_CHECK(err_code);
 
-        } break;            
+        } break;
+        case BLE_GAP_EVT_CONN_PARAM_UPDATE:
+
+        {
+          
+
+          // Accepting parameters requested
+
+          err_code = sd_ble_gap_conn_param_update(p_ble_evt->evt.gap_evt.conn_handle, &p_ble_evt->evt.gap_evt.params.conn_param_update.conn_params);
+
+          APP_ERROR_CHECK(err_code);
+
+        } break;           
  
         case BLE_GATTS_EVT_TIMEOUT:
 
@@ -380,7 +394,6 @@ uint32_t DoNotification(_sUartService * psUartService, uint8_t *pucNotifyByf)
 {
 
     uint32_t err_code;
-    const uint8_t sampleBuf[2] = {'A','B'};
  
     // Send value if connected and notifying
 

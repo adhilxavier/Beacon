@@ -143,8 +143,16 @@ typedef enum __eRxState
 }_eRxState;
  
 static _eRxState RxState = START;
+
+#define BECON_START_DLMTR               "DEF"
+
+#define BECON_STOP_DLMTR                "FED"
+
+#define CONN_START_DLMTR                "ABC"
+
+#define CONN_STOP_DLMTR                 "CBA"
  
-static uint8_t ucResponseData[110] = {0};
+#define BEACON_PAYLOAD_SIZE             110
  
 #define APP_ADV_INTERVAL                64                                      /**< The advertising interval (in units of 0.625 ms; this value corresponds to 40 ms). */
 
@@ -152,11 +160,11 @@ static uint8_t ucResponseData[110] = {0};
 
 #define APP_BLE_CONN_CFG_TAG            1                                  /**< A tag identifying the SoftDevice BLE configuration. */
 
-#define DEVICE_NAME                     "Test Beacon"
+#define DEVICE_NAME                     "Test"
 
 #define NON_CONNECTABLE_ADV_INTERVAL    MSEC_TO_UNITS(100, UNIT_0_625_MS)  /**< The advertising interval for non-connectable advertisement (100 ms). This value can vary between 100ms to 10.24s). */
  
-#define APP_BEACON_INFO_LENGTH          150                               /**< Total length of information advertised by the Beacon. */
+#define APP_BEACON_INFO_LENGTH          110                               /**< Total length of information advertised by the Beacon. */
 
 #define APP_ADV_DATA_LENGTH             25                               /**< Length of manufacturer specific data in the advertisement. */
 
@@ -176,9 +184,9 @@ static uint8_t ucResponseData[110] = {0};
                                         0xcd, 0xde, 0xef, 0xf0            /**< Proprietary UUID for Beacon. */
 #define APP_BEACON_DATA                 0x01, 0x12, 0x23, 0x34  
 
-#define FIRST_CONN_PARAMS_UPDATE_DELAY  APP_TIMER_TICKS(20000)                  /**< Time from initiating event (connect or start of notification) to first time sd_ble_gap_conn_param_update is called (15 seconds). */
+#define FIRST_CONN_PARAMS_UPDATE_DELAY  APP_TIMER_TICKS(15000)                  /**< Time from initiating event (connect or start of notification) to first time sd_ble_gap_conn_param_update is called (15 seconds). */
 
-#define NEXT_CONN_PARAMS_UPDATE_DELAY   APP_TIMER_TICKS(60000)                   /**< Time between each call to sd_ble_gap_conn_param_update after the first call (5 seconds). */
+#define NEXT_CONN_PARAMS_UPDATE_DELAY   APP_TIMER_TICKS(5000)                   /**< Time between each call to sd_ble_gap_conn_param_update after the first call (5 seconds). */
 
 #define MAX_CONN_PARAMS_UPDATE_COUNT    3                                       /**< Number of attempts before giving up the connection parameter negotiation. */
  
@@ -204,6 +212,8 @@ static uint8_t ucResponseData[110] = {0};
 
 #define CONN_SUP_TIMEOUT                MSEC_TO_UNITS(4000, UNIT_10_MS)         /**< Connection supervisory time-out (4 seconds). */
  
+static uint8_t ucResponseData[BEACON_PAYLOAD_SIZE] = {0};
+
 bool ReceivePacket();
 
 static void BeaconProcess();
@@ -245,6 +255,10 @@ bool IsConnected = false;
 bool IsNotifyEnabled = false;
 
 long long ullSeqNum = 0;
+
+    uint8_t ucBeaconData[BEACON_PAYLOAD_SIZE] = {0};
+
+static uint8_t ucRcvdBuf[5] = {0};
 
 /**@brief Struct that contains pointers to the encoded advertising data. */
 
@@ -477,8 +491,8 @@ static void AdvertisingInitConnectable(void)
 
     memset(&adv_params, 0, sizeof(adv_params));
  
-    adv_params.primary_phy     = BLE_GAP_PHY_1MBPS;
-    adv_params.secondary_phy   = BLE_GAP_PHY_1MBPS;
+    adv_params.primary_phy     = BLE_GAP_PHY_CODED;
+    adv_params.secondary_phy   = BLE_GAP_PHY_CODED;
     adv_params.duration        = BLE_GAP_ADV_TIMEOUT_LIMITED_MAX;
 
     adv_params.properties.type = BLE_GAP_ADV_TYPE_EXTENDED_CONNECTABLE_NONSCANNABLE_UNDIRECTED;
@@ -490,9 +504,9 @@ static void AdvertisingInitConnectable(void)
     adv_params.interval        = APP_ADV_INTERVAL;
  
  
-    err_code = ble_advdata_encode(&advdata, m_adv_data.adv_data.p_data, &m_adv_data.adv_data.len);
+    //err_code = ble_advdata_encode(&advdata, m_adv_data.adv_data.p_data, &m_adv_data.adv_data.len);
 
-    APP_ERROR_CHECK(err_code);
+    //APP_ERROR_CHECK(err_code);
  
     err_code = sd_ble_gap_adv_set_configure(&m_adv_handle, &m_adv_data, &adv_params);
 
@@ -524,11 +538,10 @@ static void advertising_init(void)
 
  
     manuf_specific_data.company_identifier = APP_COMPANY_IDENTIFIER;
-    manuf_specific_data.data.p_data = (uint8_t *) m_beacon_info;
+    manuf_specific_data.data.p_data = (uint8_t *) ucBeaconData;
     manuf_specific_data.data.size   = APP_BEACON_INFO_LENGTH;
  
     //BLE_GAP_CONN_SEC_MODE_SET_OPEN(&sec_mode);
-
     //err_code = sd_ble_gap_device_name_set(&sec_mode,
 
     //                                 (const uint8_t *)DEVICE_NAME,
@@ -590,8 +603,8 @@ static void advertising_init(void)
     m_adv_params.filter_policy   = BLE_GAP_ADV_FP_ANY;
     m_adv_params.interval        = APP_ADV_INTERVAL;//NON_CONNECTABLE_ADV_INTERVAL;
     m_adv_params.duration        = APP_ADV_DURATION;//0;       // Never time out.
-    m_adv_params.primary_phy     = BLE_GAP_PHY_1MBPS;
-    m_adv_params.secondary_phy   = BLE_GAP_PHY_1MBPS;
+    m_adv_params.primary_phy     = BLE_GAP_PHY_CODED;
+    m_adv_params.secondary_phy   = BLE_GAP_PHY_CODED;
  
     err_code = ble_advdata_encode(&advdata, m_adv_data.adv_data.p_data, &m_adv_data.adv_data.len);
     APP_ERROR_CHECK(err_code);
@@ -808,7 +821,7 @@ void UartServiceHandler(_sUartService *psUartService, _sUartServiceEvtType *pEvt
                                                 break;
 
       case UART_SVC_EVT_DISCONNECTED          : PrintMessage("Disconnected to central\n\r");
-                                                SetDeviceState(DEV_CONN);
+                                                //SetDeviceState(DEV_CONN_ADV);
                                                 //IsAdvertsisementDone = true;
                                                 break;
 
@@ -818,6 +831,7 @@ void UartServiceHandler(_sUartService *psUartService, _sUartServiceEvtType *pEvt
       case UART_SVC_EVT_NOTIFICATION_DISABLED : PrintMessage("Notification Disabled\n\r");
                                                 IsNotifyEnabled = false;
                                                 break;
+      
 
       default                                 :
                                                 break;
@@ -905,6 +919,14 @@ int main(void)
 
           case DEV_BEACON  : 
                           PrintMessage("In beacon mode\n\r");
+                          if(ucResponseFlag)
+                          {
+                            BeaconProcess();
+                            advertising_init();
+                            advertising_start();
+                            ucResponseFlag = false;
+                          }
+                          IsAdvertsisementDone = true;
                           break;
           case DEV_CONN    :
                           SetNotificationPayload();
@@ -944,6 +966,7 @@ static void BeaconProcess()
 
 {
     uint32_t err_code;
+
  
     if(IsConnected)
     {
@@ -956,12 +979,15 @@ static void BeaconProcess()
       advertising_stop();
     }
 
-   if (ucResponseFlag)
-   {
-     memset(m_beacon_info, 0, sizeof(m_beacon_info));
-     memcpy(m_beacon_info, ucResponseData, sizeof(ucResponseData));
-     //ucResponseFlag = false;
-   }
+     for(size_t i = 0; i < BEACON_PAYLOAD_SIZE; i++)
+    {
+      if(CircularBufPop(&sCircularBuf, &ucBeaconData[i]) != 0)
+      {
+         memset(m_beacon_info, 0, sizeof(m_beacon_info));
+         memcpy(m_beacon_info, ucBeaconData, sizeof(m_beacon_info));
+      }
+    }
+
 }
 
 /**
@@ -990,6 +1016,7 @@ void SetNotificationPayload()
         {
           ucNotifyData[1] = ucCount;
           DoNotification(&sUartService, ucNotifyData);
+          i = 0;
           break;
         }
         else if(i > NOTIFY_BUF_LEN - 6)
@@ -997,7 +1024,8 @@ void SetNotificationPayload()
           ucNotifyData[1] = ucCount;
           DoNotification(&sUartService, ucNotifyData);
           PrintMessage(ucNotifyData);
-          nrf_delay_ms(100);
+          i = 0;
+          nrf_delay_ms(200);
           break;
         }
         
@@ -1019,29 +1047,37 @@ bool ReceivePacket()
  
       if (app_uart_get(&ucByte) == NRF_SUCCESS)
       {
+          ucRcvdBuf[ucPos] = ucByte;
+          ucPos++;
+          if(ucPos == 3)
+          {
+            ucPos = 0;
+          }
           switch(RxState)
           {
             case START :  memset(ucResponseData, 0, sizeof(ucResponseData));
 
-                          if (ucByte == '*')
+                          if ((strcmp(ucRcvdBuf, CONN_START_DLMTR) == 0) || 
+                                    (strcmp(ucRcvdBuf, BECON_START_DLMTR) == 0))
                           { 
                             RxState = RCV;
                           }
                           break;
  
-            case RCV   : if (ucByte == '#')
+            case RCV   : if ((strcmp(ucRcvdBuf, CONN_STOP_DLMTR) == 0) || 
+                                    (strcmp(ucRcvdBuf, BECON_STOP_DLMTR) == 0))
                          {
                             RxState = END;
                             break;
                          }
                           CircularBufPush(&sCircularBuf, ucByte);
-                         //ucResponseData[ucPos++] = ucByte;
                          break;
  
             case END   : ucPos = 0;
                          ucResponseFlag = true;
                          RxState = START;
                          break;
+            default    :break;
           }
       }
  
